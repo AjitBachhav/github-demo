@@ -17,25 +17,28 @@ on:
 permissions:
   contents: read
   id-token: write
-  security-events: write  # Required for submitting dependency snapshots
+  actions: read
+  security-events: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
 
-      - name: Build with Maven
-        run: mvn clean install
+    - name: Build with Maven
+      run: mvn clean install
 
-      - name: Submit Maven dependency snapshot
-        uses: advanced-security/maven-dependency-submission-action@v4
+    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
+    - name: Update dependency graph
+      uses: advanced-security/maven-dependency-submission-action@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
