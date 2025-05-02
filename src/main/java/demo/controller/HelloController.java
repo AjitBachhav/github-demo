@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
     @GetMapping("/")
     public String hello() {
-        return "Hello, Spring Boot is running, new journy is here!";
+      return "Hello, Spring Boot is running, new journy is here!";
     }
 }
